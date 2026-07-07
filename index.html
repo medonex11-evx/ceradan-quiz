@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ceradan® Mineral Sunscreen Quiz</title>
+<meta name="description" content="Take the Ceradan® Mineral Sunscreen quiz." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* =========================================================
+     CERADAN BRANDING — edit these variables to fine-tune colours
+     ========================================================= */
+  :root {
+    --brand-teal:      #00A7B5;  /* primary Ceradan turquoise */
+    --brand-teal-dark: #00727C;  /* deep teal (headings / nav) */
+    --brand-teal-2:    #33BFC9;  /* lighter teal */
+    --brand-aqua-bg:   #EAF7F8;  /* soft aqua page background */
+    --brand-mint:      #DFF3EF;  /* mint tint */
+    --brand-coral:     #FF7A59;  /* warm accent / highlights */
+    --brand-success:   #1FA971;  /* correct answer green */
+    --brand-error:     #E4573D;  /* incorrect red */
+    --brand-ink:       #22333B;  /* primary text */
+    --brand-ink-soft:  #5B6B70;  /* secondary text */
+    --brand-line:      #D5E7E9;  /* borders */
+    --card-radius:     20px;
+    --font-head: 'Poppins', system-ui, sans-serif;
+    --font-body: 'Nunito Sans', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    color: var(--brand-ink);
+    background:
+      radial-gradient(1200px 600px at 100% -10%, rgba(51,191,201,0.18), transparent 55%),
+      radial-gradient(1000px 500px at -10% 110%, rgba(255,122,89,0.12), transparent 55%),
+      var(--brand-aqua-bg);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .wrap { width: 100%; max-width: 620px; padding: 24px 18px 60px; }
+
+  /* ---------- Header / brand ---------- */
+  .brand {
+    text-align: center;
+    margin: 14px 0 22px;
+  }
+  .brand-logo {
+    max-height: 54px;
+    width: auto;
+    display: none;   /* shown automatically if logo.png loads */
+    margin: 0 auto 4px;
+  }
+  .brand-wordmark {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: -0.5px;
+    color: var(--brand-teal-dark);
+    line-height: 1;
+  }
+  .brand-wordmark sup { font-size: 14px; top: -0.9em; }
+  .brand-tag {
+    font-family: var(--font-head);
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--brand-teal);
+    margin-top: 8px;
+  }
+
+  /* ---------- Card ---------- */
+  .card {
+    background: #fff;
+    border: 1px solid var(--brand-line);
+    border-radius: var(--card-radius);
+    box-shadow: 0 18px 40px -24px rgba(0,114,124,0.45);
+    padding: 30px 26px;
+    animation: rise .45s ease both;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+  .card h1 {
+    font-family: var(--font-head);
+    font-size: 23px;
+    font-weight: 700;
+    color: var(--brand-teal-dark);
+    margin: 0 0 6px;
+  }
+  .card .sub { color: var(--brand-ink-soft); font-size: 15px; margin: 0 0 22px; }
+
+  /* progress dots */
+  .steps { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
+  .steps span { width: 9px; height: 9px; border-radius: 50%; background: var(--brand-line); transition: .3s; }
+  .steps span.on { background: var(--brand-teal); transform: scale(1.25); }
+
+  /* ---------- Form ---------- */
+  label.field { display: block; margin-bottom: 16px; }
+  label.field .lab {
+    display: block; font-family: var(--font-head); font-weight: 600;
+    font-size: 14px; margin-bottom: 6px; color: var(--brand-ink);
+  }
+  .req { color: var(--brand-coral); }
+  input[type=text], input[type=email], input[type=tel], input[type=number], select {
+    width: 100%; padding: 13px 14px; font-family: var(--font-body); font-size: 15px;
+    border: 1.5px solid var(--brand-line); border-radius: 12px; background: #fbfeff;
+    color: var(--brand-ink); transition: border-color .2s, box-shadow .2s;
+  }
+  input:focus, select:focus {
+    outline: none; border-color: var(--brand-teal);
+    box-shadow: 0 0 0 4px rgba(0,167,181,0.15);
+  }
+  .hint { font-size: 12.5px; color: var(--brand-ink-soft); margin-top: 5px; }
+
+  /* segmented (gender / yes-no) */
+  .seg { display: flex; gap: 10px; }
+  .seg .opt {
+    flex: 1; position: relative;
+  }
+  .seg input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .seg .box {
+    display: flex; align-items: center; justify-content: center;
+    padding: 12px; border: 1.5px solid var(--brand-line); border-radius: 12px;
+    font-family: var(--font-head); font-weight: 600; font-size: 14px; color: var(--brand-ink-soft);
+    background: #fbfeff; transition: .18s; cursor: pointer;
+  }
+  .seg input:checked + .box {
+    border-color: var(--brand-teal); background: var(--brand-mint); color: var(--brand-teal-dark);
+    box-shadow: 0 0 0 3px rgba(0,167,181,0.12);
+  }
+
+  .err-msg {
+    color: var(--brand-error); font-size: 13px; margin-top: 4px; display: none;
+  }
+  label.invalid input, label.invalid select { border-color: var(--brand-error); }
+  label.invalid .err-msg { display: block; }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    width: 100%; border: none; cursor: pointer; font-family: var(--font-head);
+    font-weight: 600; font-size: 16px; padding: 15px; border-radius: 14px;
+    color: #fff; background: linear-gradient(135deg, var(--brand-teal), var(--brand-teal-dark));
+    transition: transform .12s, box-shadow .2s, opacity .2s;
+    box-shadow: 0 12px 24px -12px rgba(0,114,124,0.7);
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+  .btn.secondary {
+    background: #fff; color: var(--brand-teal-dark);
+    border: 1.5px solid var(--brand-teal); box-shadow: none;
+  }
+
+  /* ---------- Quiz ---------- */
+  .q-badge {
+    display: inline-block; font-family: var(--font-head); font-weight: 600; font-size: 12px;
+    letter-spacing: 1px; text-transform: uppercase; color: var(--brand-teal);
+    background: var(--brand-mint); padding: 6px 12px; border-radius: 999px; margin-bottom: 14px;
+  }
+  .q-text {
+    font-family: var(--font-head); font-weight: 600; font-size: 19px; line-height: 1.4;
+    color: var(--brand-ink); margin: 0 0 20px;
+  }
+  .answers { display: flex; flex-direction: column; gap: 11px; }
+  .ans {
+    display: flex; align-items: center; gap: 12px; text-align: left; width: 100%;
+    padding: 15px 16px; border: 1.5px solid var(--brand-line); border-radius: 14px;
+    background: #fbfeff; font-family: var(--font-body); font-size: 15.5px; color: var(--brand-ink);
+    cursor: pointer; transition: .16s;
+  }
+  .ans:hover:not(.locked) { border-color: var(--brand-teal); background: var(--brand-mint); }
+  .ans .key {
+    flex: 0 0 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+    font-family: var(--font-head); font-weight: 700; font-size: 14px;
+    background: var(--brand-aqua-bg); color: var(--brand-teal-dark); transition: .16s;
+  }
+  .ans.locked { cursor: default; }
+  .ans.correct { border-color: var(--brand-success); background: #E9F9F1; }
+  .ans.correct .key { background: var(--brand-success); color: #fff; }
+  .ans.wrong { border-color: var(--brand-error); background: #FDECE8; }
+  .ans.wrong .key { background: var(--brand-error); color: #fff; }
+  .ans .mark { margin-left: auto; font-weight: 700; font-size: 14px; font-family: var(--font-head); }
+  .ans.correct .mark { color: var(--brand-success); }
+  .ans.wrong .mark { color: var(--brand-error); }
+
+  .feedback {
+    margin-top: 18px; padding: 16px; border-radius: 14px; display: none;
+    font-size: 15px; line-height: 1.5;
+  }
+  .feedback.show { display: block; animation: rise .35s ease both; }
+  .feedback.good { background: #E9F9F1; color: #0d6b48; border: 1px solid #bfe9d5; }
+  .feedback.bad  { background: #FDECE8; color: #9c3520; border: 1px solid #f6cabd; }
+  .feedback strong { font-family: var(--font-head); }
+
+  /* ---------- Thank you ---------- */
+  .thanks { text-align: center; }
+  .thanks .tick {
+    width: 76px; height: 76px; margin: 4px auto 18px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--brand-teal-2), var(--brand-teal-dark));
+    display: grid; place-items: center; color: #fff; font-size: 38px;
+    box-shadow: 0 16px 30px -14px rgba(0,114,124,0.8);
+  }
+  .thanks h1 { font-family: var(--font-head); color: var(--brand-teal-dark); margin: 0 0 8px; }
+  .thanks p { color: var(--brand-ink-soft); font-size: 15.5px; }
+
+  .global-err {
+    background: #FDECE8; color: #9c3520; border: 1px solid #f6cabd;
+    border-radius: 12px; padding: 13px 15px; font-size: 14px; margin-bottom: 16px; display: none;
+  }
+  .global-err.show { display: block; }
+
+  .footer {
+    text-align: center; margin-top: 26px; font-size: 12.5px; color: var(--brand-ink-soft);
+  }
+  .footer a { color: var(--brand-teal-dark); text-decoration: none; }
+
+  .spinner {
+    width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,.5);
+    border-top-color: #fff; border-radius: 50%; display: inline-block;
+    animation: spin .7s linear infinite; vertical-align: -3px; margin-right: 8px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 480px) {
+    .card { padding: 24px 18px; }
+    .brand-wordmark { font-size: 27px; }
+    .q-text { font-size: 17.5px; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- BRAND HEADER -->
+    <div class="brand">
+      <!-- Drop a file named logo.png next to index.html and it will appear automatically -->
+      <img class="brand-logo" id="brandLogo" src="logo.png" alt="Ceradan" onload="this.style.display='block'; document.getElementById('wordmark').style.display='none';" onerror="this.remove();" />
+      <div class="brand-wordmark" id="wordmark">Ceradan<sup>&reg;</sup></div>
+      <div class="brand-tag">Mineral Sunscreen Quiz</div>
+    </div>
+
+    <div class="card" id="card">
+      <!-- ============ STEP 1: PARTICIPANT DETAILS ============ -->
+      <section id="step-details">
+        <div class="steps"><span class="on"></span><span></span><span></span></div>
+        <h1>Let&rsquo;s get to know you</h1>
+        <p class="sub">Enter your details to start the quiz. It takes less than a minute.</p>
+
+        <div class="global-err" id="detailsError"></div>
+
+        <form id="detailsForm" novalidate>
+          <label class="field" id="f-name">
+            <span class="lab">Name <span class="req">*</span></span>
+            <input type="text" name="name" autocomplete="name" required />
+            <span class="err-msg">Please enter your name.</span>
+          </label>
+
+          <label class="field" id="f-email">
+            <span class="lab">Email <span class="req">*</span></span>
+            <input type="email" name="email" autocomplete="email" required />
+            <span class="hint">Each email can only enter once.</span>
+            <span class="err-msg">Please enter a valid email address.</span>
+          </label>
+
+          <label class="field" id="f-phone">
+            <span class="lab">Phone Number <span class="req">*</span></span>
+            <input type="tel" name="phone" autocomplete="tel" inputmode="tel" required />
+            <span class="err-msg">Please enter your phone number.</span>
+          </label>
+
+          <div class="field" id="f-gender">
+            <span class="lab">Gender <span class="req">*</span></span>
+            <div class="seg">
+              <label class="opt"><input type="radio" name="gender" value="Male" /><span class="box">Male</span></label>
+              <label class="opt"><input type="radio" name="gender" value="Female" /><span class="box">Female</span></label>
+            </div>
+            <span class="err-msg">Please select your gender.</span>
+          </div>
+
+          <label class="field" id="f-age">
+            <span class="lab">Age <span class="req">*</span></span>
+            <input type="number" name="age" min="1" max="120" inputmode="numeric" required />
+            <span class="err-msg">Please enter a valid age.</span>
+          </label>
+
+          <div class="field" id="f-existing">
+            <span class="lab">Are you an existing Ceradan user? <span class="req">*</span></span>
+            <div class="seg">
+              <label class="opt"><input type="radio" name="existing" value="Yes" /><span class="box">Yes</span></label>
+              <label class="opt"><input type="radio" name="existing" value="No" /><span class="box">No</span></label>
+            </div>
+            <span class="err-msg">Please choose one.</span>
+          </div>
+
+          <button type="submit" class="btn" id="startBtn">Start the quiz →</button>
+        </form>
+      </section>
+
+      <!-- ============ STEP 2: QUIZ ============ -->
+      <section id="step-quiz" class="hidden">
+        <div class="steps"><span></span><span class="on"></span><span></span></div>
+        <div class="q-badge">Question</div>
+        <p class="q-text" id="qText"></p>
+        <div class="answers" id="answers"></div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <button type="button" class="btn hidden" id="submitBtn" style="margin-top:20px;">Submit &amp; finish</button>
+      </section>
+
+      <!-- ============ STEP 3: THANK YOU ============ -->
+      <section id="step-thanks" class="hidden thanks">
+        <div class="steps"><span></span><span></span><span class="on"></span></div>
+        <div class="tick">&#10003;</div>
+        <h1>Thank you!</h1>
+        <p id="thanksMsg">Your response has been recorded. We appreciate you taking the Ceradan&reg; quiz.</p>
+      </section>
+    </div>
+
+    <div class="footer">
+      &copy; <span id="yr"></span> Ceradan&reg; &middot; A skincare brand by Hyphens Pharma
+    </div>
+  </div>
+
+<script>
+/* =====================================================================
+   CONFIG — paste your deployed Google Apps Script Web App URL here.
+   (See SETUP.md, step 2.) Leave as "" to run the quiz without saving.
+   ===================================================================== */
+const CONFIG = {
+  SCRIPT_URL: "",        // e.g. "https://script.google.com/macros/s/AKfy..../exec"
+  SHOW_ANSWER: true      // reveal correct answer after the participant answers
+};
+
+/* ------------------- QUIZ QUESTIONS (from the source doc) ------------------- */
+/* correct = index of the correct option (0-based) */
+const QUESTIONS = [
+  {
+    q: "What type of active UV filters are used in Ceradan® Mineral Sunscreen?",
+    options: [
+      "Organic chemical filters (e.g., Avobenzone)",
+      "100% Inorganic mineral filters (Zinc Oxide & Titanium Dioxide)",
+      "A hybrid mix of chemicals and plants",
+      "None of the above"
+    ],
+    correct: 1
+  },
+  {
+    q: "What is the highest level of UVA protection rating that Ceradan® Mineral Sunscreen provides?",
+    options: ["PA+", "PA++", "PA+++", "PA++++"],
+    correct: 3
+  },
+  {
+    q: "True or False: Ceradan® Mineral Sunscreen is specially designed to be safe and effective for dry, sensitive, and eczema-prone (AD) skin.",
+    options: ["True", "False"],
+    correct: 0
+  },
+  {
+    q: "What is the sun protection factor (SPF) of Ceradan® Mineral Sunscreen, and exactly how much UVB light does it filter out to protect your skin from sunburn?",
+    options: [
+      "SPF 15 and 93% of UVB light",
+      "SPF 30 and 97% of UVB light",
+      "SPF 50+ and 98% of UVB light",
+      "SPF 50+ and 75% of UVB light"
+    ],
+    correct: 2
+  },
+  {
+    q: "Ceradan® is famous for its unique skin barrier-repair science. What is the precise, dominant lipid ratio used in its formula?",
+    options: [
+      "1:1:1",
+      "5:3:1",
+      "3:1:1 (Ceramides, Cholesterol, Free Fatty Acids)",
+      "1:2:3"
+    ],
+    correct: 2
+  },
+  {
+    q: "Which unique, soothing botanical extract is added to Ceradan® Mineral Sunscreen to instantly reduce skin irritation and burning caused by the sun?",
+    options: [
+      "Artemisia Exosome",
+      "Tasmannia lanceolata Extract",
+      "Aloe Vera",
+      "Green Tea Extract"
+    ],
+    correct: 1
+  },
+  {
+    q: "How does a physical/mineral sunscreen like Ceradan® protect your skin from harmful UV rays compared to a chemical sunscreen?",
+    options: [
+      "It absorbs UV light and turns it into heat",
+      "It creates a surface shield that reflects and scatters UV light away",
+      "It sinks deep into the bloodstream to protect cells",
+      "It alters the skin's pigment temporarily"
+    ],
+    correct: 1
+  },
+  {
+    q: "Ceradan® Mineral Sunscreen’s hypoallergenic formula is completely free from which common irritants?",
+    options: [
+      "Water and Glycerin",
+      "Zinc Oxide and Titanium Dioxide",
+      "Parabens, colourants, and lanolin",
+      "Vitamin D and Ceramides"
+    ],
+    correct: 2
+  },
+  {
+    q: "Why do chemical sunscreens sometimes cause stinging or allergic reactions on dry, sensitive skin compared to mineral sunscreens?",
+    options: [
+      "Mineral sunscreens are absorbed deeper into the blood",
+      "Chemical sunscreens are too cold for the skin",
+      "Chemical sunscreens use organic filters that absorb UV light into the skin and can trigger irritation or endocrine disruption",
+      "Mineral sunscreens contain heavy perfume fragrances"
+    ],
+    correct: 2
+  }
+];
+
+/* ----------------------------- STATE ----------------------------- */
+const state = { details: null, question: null, qIndex: null, chosen: null, isCorrect: null };
+const LETTERS = ["A", "B", "C", "D", "E"];
+
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+/* ----------------------------- HELPERS ----------------------------- */
+function show(id) {
+  ['step-details','step-quiz','step-thanks'].forEach(s =>
+    document.getElementById(s).classList.toggle('hidden', s !== id));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+function markInvalid(id, bad){ document.getElementById(id).classList.toggle('invalid', bad); }
+
+/* ----------------------------- STEP 1: DETAILS ----------------------------- */
+const detailsForm = document.getElementById('detailsForm');
+detailsForm.addEventListener('submit', async function(e){
+  e.preventDefault();
+  const f = detailsForm;
+  const name = f.name.value.trim();
+  const email = f.email.value.trim();
+  const phone = f.phone.value.trim();
+  const gender = (f.querySelector('input[name=gender]:checked')||{}).value;
+  const age = f.age.value.trim();
+  const existing = (f.querySelector('input[name=existing]:checked')||{}).value;
+
+  let ok = true;
+  markInvalid('f-name', !name); ok = ok && !!name;
+  const emailOk = isEmail(email); markInvalid('f-email', !emailOk); ok = ok && emailOk;
+  markInvalid('f-phone', !phone); ok = ok && !!phone;
+  markInvalid('f-gender', !gender); ok = ok && !!gender;
+  const ageOk = age && +age >= 1 && +age <= 120; markInvalid('f-age', !ageOk); ok = ok && ageOk;
+  markInvalid('f-existing', !existing); ok = ok && !!existing;
+  if (!ok) return;
+
+  state.details = { name, email, phone, gender, age, existing };
+
+  // Optional: pre-check email uniqueness before showing the quiz
+  const errBox = document.getElementById('detailsError');
+  errBox.classList.remove('show');
+  const btn = document.getElementById('startBtn');
+
+  if (CONFIG.SCRIPT_URL) {
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Checking…';
+    try {
+      const res = await callScript({ action: 'check', email });
+      if (res && res.exists) {
+        errBox.textContent = "This email has already taken the quiz. Each email can only enter once.";
+        errBox.classList.add('show');
+        btn.disabled = false; btn.textContent = 'Start the quiz →';
+        return;
+      }
+    } catch (err) {
+      // If the check fails (e.g. network), let them continue; final submit still guards.
+      console.warn('Email pre-check failed:', err);
+    }
+    btn.disabled = false; btn.textContent = 'Start the quiz →';
+  }
+
+  loadRandomQuestion();
+  show('step-quiz');
+});
+
+/* ----------------------------- STEP 2: QUIZ ----------------------------- */
+function loadRandomQuestion(){
+  const idx = Math.floor(Math.random() * QUESTIONS.length);
+  state.qIndex = idx;
+  state.question = QUESTIONS[idx];
+  state.chosen = null;
+  state.isCorrect = null;
+
+  document.getElementById('qText').textContent = state.question.q;
+  const wrap = document.getElementById('answers');
+  wrap.innerHTML = '';
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('submitBtn').classList.add('hidden');
+
+  state.question.options.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'ans';
+    b.dataset.i = i;
+    b.innerHTML = '<span class="key">'+LETTERS[i]+'</span><span class="txt"></span>';
+    b.querySelector('.txt').textContent = opt;
+    b.addEventListener('click', () => chooseAnswer(i));
+    wrap.appendChild(b);
+  });
+}
+
+function chooseAnswer(i){
+  if (state.chosen !== null) return;         // lock after first answer
+  state.chosen = i;
+  const correct = state.question.correct;
+  state.isCorrect = (i === correct);
+
+  const buttons = [...document.querySelectorAll('.ans')];
+  buttons.forEach(b => {
+    b.classList.add('locked');
+    const bi = +b.dataset.i;
+    if (CONFIG.SHOW_ANSWER && bi === correct) {
+      b.classList.add('correct');
+      b.insertAdjacentHTML('beforeend', '<span class="mark">Correct answer</span>');
+    }
+    if (bi === i && !state.isCorrect) {
+      b.classList.add('wrong');
+      b.insertAdjacentHTML('beforeend', '<span class="mark">Your answer</span>');
+    }
+    if (bi === i && state.isCorrect) {
+      b.insertAdjacentHTML('beforeend', '<span class="mark">Your answer</span>');
+    }
+  });
+
+  const fb = document.getElementById('feedback');
+  if (state.isCorrect) {
+    fb.className = 'feedback good show';
+    fb.innerHTML = '<strong>Correct! 🌟</strong> Well done — that&rsquo;s the right answer.';
+  } else {
+    fb.className = 'feedback bad show';
+    const correctText = state.question.options[correct];
+    fb.innerHTML = CONFIG.SHOW_ANSWER
+      ? '<strong>Not quite.</strong> The correct answer is <strong>' + LETTERS[correct] + ')</strong> ' + escapeHtml(correctText) + '.'
+      : '<strong>Thanks for your answer.</strong>';
+  }
+
+  document.getElementById('submitBtn').classList.remove('hidden');
+}
+
+function escapeHtml(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+/* ----------------------------- STEP 3: SUBMIT ----------------------------- */
+document.getElementById('submitBtn').addEventListener('click', async function(){
+  const btn = this;
+  const payload = {
+    action: 'submit',
+    name: state.details.name,
+    email: state.details.email,
+    phone: state.details.phone,
+    gender: state.details.gender,
+    age: state.details.age,
+    existing: state.details.existing,
+    question: state.question.q,
+    questionNumber: state.qIndex + 1,
+    yourAnswer: LETTERS[state.chosen] + ') ' + state.question.options[state.chosen],
+    correctAnswer: LETTERS[state.question.correct] + ') ' + state.question.options[state.question.correct],
+    result: state.isCorrect ? 'Correct' : 'Incorrect',
+    timestamp: new Date().toISOString()
+  };
+
+  if (!CONFIG.SCRIPT_URL) {
+    // No backend configured — just show thank-you (useful for previewing).
+    show('step-thanks');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Submitting…';
+  try {
+    const res = await callScript(payload);
+    if (res && res.status === 'duplicate') {
+      document.getElementById('thanksMsg').textContent =
+        "This email has already entered the quiz — each email can only take part once.";
+      show('step-thanks');
+      return;
+    }
+    show('step-thanks');
+  } catch (err) {
+    console.error(err);
+    btn.disabled = false;
+    btn.textContent = 'Submit & finish';
+    alert("Sorry, we couldn't save your response. Please check your connection and try again.");
+  }
+});
+
+/* ----------------------------- BACKEND CALL ----------------------------- */
+/* Uses text/plain to avoid a CORS preflight against Apps Script. */
+async function callScript(data){
+  const r = await fetch(CONFIG.SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(data)
+  });
+  return await r.json();
+}
+</script>
+</body>
+</html>
