@@ -13,17 +13,18 @@
      CERADAN BRANDING — edit these variables to fine-tune colours
      ========================================================= */
   :root {
-    --brand-teal:      #00A7B5;  /* primary Ceradan turquoise */
-    --brand-teal-dark: #00727C;  /* deep teal (headings / nav) */
-    --brand-teal-2:    #33BFC9;  /* lighter teal */
-    --brand-aqua-bg:   #EAF7F8;  /* soft aqua page background */
-    --brand-mint:      #DFF3EF;  /* mint tint */
-    --brand-coral:     #FF7A59;  /* warm accent / highlights */
+    --brand-teal:      #F2993D;  /* primary Ceradan Sun Protect orange */
+    --brand-teal-dark: #C96A1E;  /* burnt orange (headings) */
+    --brand-teal-2:    #F7B85C;  /* lighter orange */
+    --brand-aqua-bg:   #FFF4E6;  /* soft peach page background */
+    --brand-mint:      #FCE6CE;  /* peach tint */
+    --brand-coral:     #E5449A;  /* pink/magenta accent (from cap) */
     --brand-success:   #1FA971;  /* correct answer green */
     --brand-error:     #E4573D;  /* incorrect red */
-    --brand-ink:       #22333B;  /* primary text */
-    --brand-ink-soft:  #5B6B70;  /* secondary text */
-    --brand-line:      #D5E7E9;  /* borders */
+    --brand-ink:       #4A3320;  /* warm primary text */
+    --brand-ink-soft:  #8A6F55;  /* warm secondary text */
+    --brand-line:      #F0DCC4;  /* warm borders */
+    --brand-blue:      #2E7DB5;  /* Ceradan logo blue */
     --card-radius:     20px;
     --font-head: 'Poppins', system-ui, sans-serif;
     --font-body: 'Nunito Sans', system-ui, sans-serif;
@@ -35,9 +36,9 @@
     font-family: var(--font-body);
     color: var(--brand-ink);
     background:
-      radial-gradient(1200px 600px at 100% -10%, rgba(51,191,201,0.18), transparent 55%),
-      radial-gradient(1000px 500px at -10% 110%, rgba(255,122,89,0.12), transparent 55%),
-      var(--brand-aqua-bg);
+      radial-gradient(1200px 600px at 100% -10%, rgba(247,184,92,0.38), transparent 55%),
+      radial-gradient(1000px 500px at -10% 110%, rgba(229,68,154,0.10), transparent 55%),
+      linear-gradient(180deg, #FFF7EC 0%, #FBD9A8 100%);
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     display: flex;
@@ -63,7 +64,7 @@
     font-weight: 700;
     font-size: 32px;
     letter-spacing: -0.5px;
-    color: var(--brand-teal-dark);
+    color: var(--brand-blue);
     line-height: 1;
   }
   .brand-wordmark sup { font-size: 14px; top: -0.9em; }
@@ -82,7 +83,7 @@
     background: #fff;
     border: 1px solid var(--brand-line);
     border-radius: var(--card-radius);
-    box-shadow: 0 18px 40px -24px rgba(0,114,124,0.45);
+    box-shadow: 0 18px 40px -24px rgba(201,106,30,0.32);
     padding: 30px 26px;
     animation: rise .45s ease both;
   }
@@ -116,7 +117,7 @@
   }
   input:focus, select:focus {
     outline: none; border-color: var(--brand-teal);
-    box-shadow: 0 0 0 4px rgba(0,167,181,0.15);
+    box-shadow: 0 0 0 4px rgba(242,153,61,0.22);
   }
   .hint { font-size: 12.5px; color: var(--brand-ink-soft); margin-top: 5px; }
 
@@ -134,7 +135,7 @@
   }
   .seg input:checked + .box {
     border-color: var(--brand-teal); background: var(--brand-mint); color: var(--brand-teal-dark);
-    box-shadow: 0 0 0 3px rgba(0,167,181,0.12);
+    box-shadow: 0 0 0 3px rgba(242,153,61,0.18);
   }
 
   .err-msg {
@@ -149,7 +150,7 @@
     font-weight: 600; font-size: 16px; padding: 15px; border-radius: 14px;
     color: #fff; background: linear-gradient(135deg, var(--brand-teal), var(--brand-teal-dark));
     transition: transform .12s, box-shadow .2s, opacity .2s;
-    box-shadow: 0 12px 24px -12px rgba(0,114,124,0.7);
+    box-shadow: 0 12px 24px -12px rgba(201,106,30,0.55);
   }
   .btn:hover { transform: translateY(-1px); }
   .btn:active { transform: translateY(0); }
@@ -206,7 +207,7 @@
     width: 76px; height: 76px; margin: 4px auto 18px; border-radius: 50%;
     background: linear-gradient(135deg, var(--brand-teal-2), var(--brand-teal-dark));
     display: grid; place-items: center; color: #fff; font-size: 38px;
-    box-shadow: 0 16px 30px -14px rgba(0,114,124,0.8);
+    box-shadow: 0 16px 30px -14px rgba(201,106,30,0.55);
   }
   .thanks h1 { font-family: var(--font-head); color: var(--brand-teal-dark); margin: 0 0 8px; }
   .thanks p { color: var(--brand-ink-soft); font-size: 15.5px; }
